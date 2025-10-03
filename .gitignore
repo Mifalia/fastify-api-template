@@ -1,0 +1,18 @@
+# dependancies
+node_modules/
+
+# Dist
+build/
+
+# Environment
+.env
+.env.*
+
+# Logs and temporaries folders
+/logs
+/tmp
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
