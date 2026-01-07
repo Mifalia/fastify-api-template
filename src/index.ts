@@ -1,22 +1,20 @@
-import '_common/scripts/load-env';
+import '_common/bootstrap/environment';
 import { app } from './app';
 
 /**
- * For tracking server uptime
+ * Makes necessary initializations before starting server
  */
-const startTime = Date.now();
-app.decorate('startTime', startTime);
+async function bootstrap() {
+  app.listen(
+    {
+      port: parseInt(process.env.PORT as string) || 8000,
+      host: process.env.HOST || '127.0.0.1',
+    },
+    (err, address) => {
+      if (err) app.log.error(err);
+      app.log.info(`server started at ${address}`);
+    }
+  );
+}
 
-/**
- * Starts server
- */
-app.listen(
-  {
-    port: parseInt(process.env.PORT as string) || 8000,
-    host: process.env.HOST || '127.0.0.1',
-  },
-  (err, address) => {
-    if (err) app.log.error(err);
-    app.log.info(`server started at ${address}`);
-  }
-);
+bootstrap();

@@ -1,32 +1,35 @@
-import { FastifyInstance } from 'fastify';
-import { calculateElapsedTime } from '_common/utils/server.utils';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { formatHumanReadableDuration } from '_common/utils/time.utils';
 import { ApiResponse } from '_common/utils/response.utils';
 
-export const indexController = async (app: FastifyInstance) => {
-  /**
-   * Index Route
-   */
-  app.get('/', async (request, reply) => {
-    return reply
-      .status(200)
-      .send(ApiResponse.success(null, { requestId: request.id }, 'Server is running'));
-  });
+/**
+ * Index controller
+ */
+class HealthController {
+  constructor(private readonly app: FastifyInstance) {}
 
   /**
-   * Server uptime check
+   * index action
    */
-  app.get('/healthcheck', async (request, reply) => {
-    const startTime = (app as any).startTime || Date.now();
-    const uptime = calculateElapsedTime(startTime);
+  public index = async (request: FastifyRequest, reply: FastifyReply) => {
+    return reply.status(200).send(ApiResponse.success(null, null, 'Server is up and running'));
+  };
 
-    return reply
-      .status(200)
-      .send(
-        ApiResponse.success(
-          { status: 'ok', uptime },
-          { requestId: request.id },
-          'Server is running'
-        )
-      );
-  });
-};
+  /**
+   * health check
+   */
+  public health = async (request: FastifyRequest, reply: FastifyReply) => {
+    const uptimeSeconds = Math.floor(process.uptime());
+    const uptimeDisplay = formatHumanReadableDuration(uptimeSeconds);
+
+    const response = {
+      status: 'ok',
+      uptimeSeconds,
+      uptimeDisplay,
+    };
+
+    return reply.status(200).send(ApiResponse.success(response, null, 'Server is up and running'));
+  };
+}
+
+export default HealthController;

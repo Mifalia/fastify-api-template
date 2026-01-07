@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { indexController } from 'modules/health/health.controller';
+import healthRoutes from 'modules/health/health.routes';
 
 /**
  * Register all routes within the app and handles their prefix
@@ -7,7 +7,7 @@ import { indexController } from 'modules/health/health.controller';
  * @param app instance of the running app
  */
 const registerRoutes = async (app: FastifyInstance) => {
-  app.register(indexController, { prefix: '/' });
+  app.register(healthRoutes, { prefix: '/' });
 };
 
 export default registerRoutes;
