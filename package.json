@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "tsx --watch src/index.ts",
+    "dev": "tsx --watch --inspect src/index.ts",
     "build": "tsc && tsc-alias",
     "start": "node ./build/index.js",
     "build:start": "npm run build && node ./build/index.js",
