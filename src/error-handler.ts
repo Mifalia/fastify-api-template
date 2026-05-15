@@ -1,12 +1,12 @@
 import { ApiResponse } from '_common/utils/response.utils';
 import { constants } from 'http2';
-import { FastifyInstance } from 'fastify';
+import { FastifyError, FastifyInstance } from 'fastify';
 
 export async function registerErrorHandler(app: FastifyInstance) {
   /**
    *  Global errors
    */
-  app.setErrorHandler(async (error, request, reply) => {
+  app.setErrorHandler(async (error: FastifyError, request, reply) => {
     return reply
       .status(error.statusCode || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
       .send(
